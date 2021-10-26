@@ -5,6 +5,7 @@ require "db.php";
 if ($_SESSION['email']) {
     $email = $_SESSION['email'];
     $select = mysqli_query($db_connect, "SELECT * FROM reg WHERE email='$email'");
+    $results = mysqli_fetch_array($select);
 } else {
     $_SESSION['login'];
     header('location:login.php');
@@ -25,7 +26,10 @@ if ($_SESSION['email']) {
 <body>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-6 c offset-md-3">
+            <div class="col-md-4">
+                <img class="img-fluid" src="<?php echo $results['file_path']; ?>" alt=" Profile Picture">
+            </div>
+            <div class="col-md-6">
                 <table class="table table-dark">
                     <thead>
                         <tr>
@@ -37,7 +41,7 @@ if ($_SESSION['email']) {
                     </thead>
                     <tbody>
                         <?php
-                        $results = mysqli_fetch_array($select);
+
                         $names = $results['name'];
                         $phone = $results['phone'];
                         $date_created = $results['created_at'];
@@ -48,7 +52,7 @@ if ($_SESSION['email']) {
                                 <td> $email</td>
                             </tr>";
                         ?>
-                    </tbody>   
+                    </tbody>
                 </table>
 
             </div>

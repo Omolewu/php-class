@@ -23,62 +23,65 @@ if (isset($_POST['submit']) && isset($_POST['fulname']) && $_SERVER["REQUEST_MET
     $errors['file'] = "The maxmum file size must not more than 5kb";
   } elseif ($file_extension != "jpg" && $file_extension != "jpeg" && $file_extension != "png" && $file_extension != "gif") {
     $errors['file'] = "Invalid Image";
-  } //  elseif (file_exists($path)) {
+  }
+  //  elseif (file_exists($path)) {
   //   $errors['file'] = "image already exist we don't accept duplication of files";
   // }
-  move_uploaded_file($tmp_name, $path);
-  // if (!namevalidation($_POST['fulname'])) {
-  //   $fullname_err =  namevalidation($_POST['fulname']);
-  // } elseif (str_word_count($_POST['fulname']) < 2) {
-  //   $errors['fullname_err'] = "Please enter your fullname";
-  // } else {
-  //   $fullname = $_POST['fulname'];
-  // }
-  // if (empty($_POST['uname'])) {
-  //   $errors['uname'] = "User name is required";
-  // } else {
-  //   $uname = $_POST['uname'];
-  // }
-  // if (empty($_POST['password'])) {
-  //   $errors['password'] = "Password is required";
-  // } else {
-  //   $password = $_POST['password'];
-  // }
-  // if (empty($_POST['email'])) {
-  //   $errors['email'] = "Email is required";
-  // } else {
-  //   $select = mysqli_query($db_connect, "select email from reg where email='" . $_POST['email'] . "'");
-  //   if (mysqli_num_rows($select) > 0) {
-  //     $errors['email'] = "Email already exist";
-  //   }
-  //   $email = $_POST['email'];
-  // }
-  // if (empty($_POST['phone'])) {
-  //   $errors['phone'] = "Phone is required";
-  // } else {
-  //   $select = mysqli_query($db_connect, "select phone from reg where phone='" . $_POST['phone'] . "'");
-  //   if (mysqli_num_rows($select) > 0) {
-  //     $errors['phone'] = "Phone already exist";
-  //   }
-  //   $phone = $_POST['phone'];
-  // }
-  // if (empty($_POST['confirmpassword'])) {
-  //   $errors['confirmpassword'] = "Please confirm your password";
-  // } else {
-  //   $confirmpassword = $_POST['confirmpassword'];
-  // }
-  // if (strcmp($confirmpassword, $password) != 0) {
-  //   $errors['passwordconfirm_err'] = "Your password doesn't matched";
-  // }
-  // if (!$errors) {
-  //   $password = md5($password);
-  //   if (mysqli_query($db_connect, "INSERT INTO reg(name, phone, email, password)
-  //   values('$fullname', '$phone', '$email', '$password')")) {
-  //     $success = "Your registration has been successfull";
-  //   } else {
-  //     $errors['dberror'] = "Something went wrong";
-  //   }
-  // }
+  if (!move_uploaded_file($tmp_name, $path)) {
+    $errors['file'] = "Your file can't be uploaded";
+  }
+  if (!namevalidation($_POST['fulname'])) {
+    $fullname_err =  namevalidation($_POST['fulname']);
+  } elseif (str_word_count($_POST['fulname']) < 2) {
+    $errors['fullname_err'] = "Please enter your fullname";
+  } else {
+    $fullname = $_POST['fulname'];
+  }
+  if (empty($_POST['uname'])) {
+    $errors['uname'] = "User name is required";
+  } else {
+    $uname = $_POST['uname'];
+  }
+  if (empty($_POST['password'])) {
+    $errors['password'] = "Password is required";
+  } else {
+    $password = $_POST['password'];
+  }
+  if (empty($_POST['email'])) {
+    $errors['email'] = "Email is required";
+  } else {
+    $select = mysqli_query($db_connect, "select email from reg where email='" . $_POST['email'] . "'");
+    if (mysqli_num_rows($select) > 0) {
+      $errors['email'] = "Email already exist";
+    }
+    $email = $_POST['email'];
+  }
+  if (empty($_POST['phone'])) {
+    $errors['phone'] = "Phone is required";
+  } else {
+    $select = mysqli_query($db_connect, "select phone from reg where phone='" . $_POST['phone'] . "'");
+    if (mysqli_num_rows($select) > 0) {
+      $errors['phone'] = "Phone already exist";
+    }
+    $phone = $_POST['phone'];
+  }
+  if (empty($_POST['confirmpassword'])) {
+    $errors['confirmpassword'] = "Please confirm your password";
+  } else {
+    $confirmpassword = $_POST['confirmpassword'];
+  }
+  if (strcmp($confirmpassword, $password) != 0) {
+    $errors['passwordconfirm_err'] = "Your password doesn't matched";
+  }
+  if (!$errors) {
+    $password = md5($password);
+    if (mysqli_query($db_connect, "INSERT INTO reg(name, phone, email, password, file_path)
+    values('$fullname', '$phone', '$email', '$password', '$path')")) {
+      $success = "Your registration has been successfull";
+    } else {
+      $errors['dberror'] = "Something went wrong";
+    }
+  }
 }
 ?>
 <!DOCTYPE html>
